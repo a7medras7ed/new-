@@ -10,68 +10,196 @@
 <!-- Tailwind for the missions section -->
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-/* ===== Mobile & Tablet Enhancements (<=768px) ===== */
+/* ===== Global Red/Black Theme ===== */
+:root{
+  --bg1:#1a1a1a; --bg2:#3b0d0d; --bg3:#000000;
+  --panel:#0f0b0b; --panel-border:#3f1010;
+  --text:#f5f5f5; --muted:#fca5a5;
+  --accent:#b91c1c; --accent-2:#7f1d1d; --accent-3:#dc2626;
+  --glow: rgba(255,0,0,0.35);
+  --gold1:#FFD700; --gold2:#B8860B; --gold3:#FFD700;
+  --mascotW: 200px; --mascotTop: 0px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(180deg,var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+  color:var(--text);
+  font-family:"Cairo",system-ui,Segoe UI,Roboto,Arial,"Noto Kufi Arabic",sans-serif;
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:18px;
+}
+.wrap{
+  width:min(1000px,96%);
+  background:var(--panel);
+  border-radius:24px;
+  border:1px solid var(--panel-border);
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+  overflow:visible
+}
+
+/* ===== Header ===== */
+.head{
+  position:relative;overflow:visible;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(90deg,var(--accent),var(--bg3));
+  color:#fff;padding:24px 22px 28px;min-height:150px;
+  border-bottom:1px solid var(--panel-border);
+  box-shadow: 0 12px 24px rgba(0,0,0,.35) inset;
+}
+.head img{position:absolute;left:18px;top:var(--mascotTop);width:var(--mascotW);height:auto;z-index:5;transform:scaleX(-1);filter:drop-shadow(0 12px 18px rgba(0,0,0,.48))}
+.title{position:relative;z-index:4;margin:0;font-weight:900;font-size:28px;
+  background:linear-gradient(90deg,var(--gold1),var(--gold2),var(--gold3),var(--gold2),var(--gold1));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:200% auto;animation:goldflow 6s linear infinite;
+  text-shadow:0 1px 0 rgba(0,0,0,.2);padding:4px 18px;border-radius:10px}
+.title::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.18) 45%,rgba(255,255,255,.55) 50%,rgba(255,255,255,.18) 55%,transparent 100%);transform:translateX(-130%) skewX(-12deg);animation:shine 3.8s ease-in-out infinite;border-radius:inherit}
+.inner{padding:18px}
+
+/* ===== Daily login (dark styling) ===== */
+.grid-panel{background:#120d0d;border:1px solid var(--panel-border);border-radius:20px;padding:14px;box-shadow:0 8px 18px rgba(0,0,0,.25)}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.grid.row2{margin-top:10px;grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:720px){.grid{grid-template-columns:repeat(3,1fr)}.grid.row2{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:520px){.grid{grid-template-columns:repeat(2,1fr)}.grid.row2{grid-template-columns:repeat(2,1fr)}}
+.card{position:relative;overflow:hidden;background:#1a1212;border:1px solid #5a1717;border-radius:16px;padding:10px 10px 12px;text-align:center;box-shadow:0 4px 14px var(--glow);transition:transform .15s ease}
+.card:hover{transform:translateY(-2px)}
+.day{font-weight:800;font-size:14px;color:#fca5a5}
+.icon{width:54px;height:54px;margin:8px auto 6px}
+.amount{font-weight:900;font-size:14px;color:#ffe4e6}
+.card.active{background:linear-gradient(145deg,var(--accent),var(--accent-2));color:#fff;border-color:transparent;box-shadow:0 8px 24px var(--glow)}
+.card.active .day{color:#fff}
+.badge{display:inline-block;margin-top:6px;background:#b91c1c;color:#fff;padding:4px 10px;border-radius:12px;font-weight:900;font-size:14px;box-shadow:0 6px 14px var(--glow)}
+.card.active::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.08) 44%,rgba(255,255,255,.2) 50%,rgba(255,255,255,.08) 56%,transparent 100%);transform:translateX(-130%) skewX(-10deg);animation:shimmer 3.5s ease-in-out infinite;pointer-events:none}
+.check{position:absolute;top:6px;inset-inline-start:6px;width:22px;height:22px;border-radius:50%;background:linear-gradient(145deg,#7f1d1d,#b91c1c);border:2px solid #fff;color:#fff;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center}
+.check::after{content:"✓"}
+.grand{margin-top:2px;font-size:11px;font-weight:900;color:#fca5a5}
+
+/* Red primary button */
+.actions{display:flex;justify-content:center;margin-top:14px}
+button.primary{position:relative;border:none;cursor:pointer;padding:12px 26px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;font-weight:900;font-size:16px;box-shadow:0 12px 24px var(--glow);overflow:hidden;transition:transform .1s ease}
+button.primary::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.14) 45%,rgba(255,255,255,.28) 50%,rgba(255,255,255,.14) 55%,transparent 100%);transform:translateX(-120%) skewX(-10deg);animation:shimmer 3.5s ease-in-out infinite}
+button.primary:hover{transform:translateY(-1px)} button.primary:active{transform:translateY(0)}
+
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#1b1b1b;color:#ffeaea;padding:10px 14px;border-radius:10px;font-weight:800;font-size:13px;box-shadow:0 8px 20px #00000066;opacity:0;transition:opacity .22s ease} .toast.show{opacity:1}
+
+/* Gold animations for titles */
+@keyframes goldflow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+@keyframes shine{0%{transform:translateX(-130%) skewX(-12deg)}48%{transform:translateX(0%) skewX(-12deg)}100%{transform:translateX(130%) skewX(-12deg)}}
+@media (max-width:600px){:root{--mascotW:160px;--mascotTop:0px}.head{min-height:120px;padding:18px 16px 22px}}
+
+/* ===== Missions section (kept styles, scoped) ===== */
+.missions-wrap { margin: 18px; border-radius: 24px; overflow: hidden; border: 1px solid var(--panel-border); box-shadow: 0 10px 30px rgba(0,0,0,.22); }
+.missions-bg { background: transparent; color: #fff; } /* already on dark panel */
+
+:root { --track-color: #fecaca; --track-fill: #dc2626; }
+.scroll-container { display: flex; gap: 1.25rem; overflow-x: auto; scroll-behavior: smooth; padding: 3.25rem 0 1.25rem; }
+.scroll-container::-webkit-scrollbar { display: none; }
+.progress-wrap { position: relative; width: 100%; }
+.progress-wrap::before { content: ""; position: absolute; top: 50%; transform: translateY(-50%); left: 0; right: 0; height: 8px; background: linear-gradient(90deg, var(--track-color), #7f1d1d); border-radius: 9999px; z-index: 0; }
+.progress-fill-track { position: absolute; top: 50%; transform: translateY(-50%); left: 0; height: 8px; background: linear-gradient(90deg, #dc2626, #7f1d1d); border-radius: 9999px; z-index: 0; transition: width 0.4s ease-in-out; }
+.tier-item { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+.level-box { min-width: 130px; padding: 0.9rem 1rem; border-radius: 9999px; text-align: center; background: #1e1e1e; border: 2px solid #7f1d1d; box-shadow: 0 4px 12px rgba(255,0,0,0.25); position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); } }
+.level-box.achieved { border-color: #f87171; background: #7f1d1d; color: #fff; animation: pulse 1.8s infinite; }
+.level-box.achieved .target { color: #ffe4e6; }
+.level-box:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 0 25px rgba(255,0,0,0.4); }
+.level-box .reward { position: absolute; top: -1.6rem; left: 50%; transform: translateX(-50%); background: #b91c1c; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 9999px; box-shadow: 0 2px 6px rgba(255,0,0,0.35); }
+.level-box .target { font-weight: 700; color: #fca5a5; }
+.tier-caption { font-size: .9rem; color: #fca5a5; font-weight: 600; }
+.tier-caption.done { color: #fff; background: #b91c1c; border-radius: 9999px; padding: .1rem .5rem; box-shadow: 0 0 12px rgba(255,0,0,0.4) inset; }
+.arrow-btn { background: #b91c1c; color: #fff; width: 2.5rem; height: 2.5rem; border-radius: 9999px; display: grid; place-items: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 3px 8px rgba(255,0,0,0.4); transition: background 0.2s; }
+.arrow-btn:hover { background: #7f1d1d; }
+.title-gold { font-weight: 700; background: linear-gradient(90deg, var(--gold1), var(--gold2), var(--gold3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; text-shadow: 0 0 8px rgba(92, 64, 51, 0.5); animation: shimmer 3s linear infinite; }
+@keyframes shimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes buttonGlow { 0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); transform: scale(1); } 50% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.8); transform: scale(1.05); } 100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); transform: scale(1); } }
+#goNowBtn { animation: buttonGlow 2s infinite ease-in-out; }
+
+/* ===== Monthly Beans Rewards (scoped) ===== */
+.monthly-section .bar-box { position: relative; width: 100%; }
+.monthly-section .monthly-progress-wrap { position: relative; width: 100%; padding: 2.5rem 0; }
+.monthly-section .monthly-progress-wrap::before {
+  content: ""; position: absolute; top: 50%; transform: translateY(-50%);
+  left: 0; right: 0; height: 8px;
+  background: linear-gradient(90deg, var(--track-color), #7f1d1d);
+  border-radius: 9999px; z-index: 0;
+}
+.monthly-section .monthly-progress-fill { position: absolute; top: 50%; transform: translateY(-50%); left: 0; height: 8px;
+  background: linear-gradient(90deg, #dc2626, #7f1d1d); border-radius: 9999px; z-index: 0; transition: width .4s ease-in-out; width:0;
+}
+.monthly-section .milestone { position: absolute; top: 50%; transform: translateY(-50%); z-index: 1; display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+.monthly-section .level-box { min-width: 130px; padding: .9rem 1rem; border-radius: 9999px; text-align: center;
+  background: #1e1e1e; border: 2px solid #7f1d1d; box-shadow: 0 4px 12px rgba(255,0,0,.25);
+  position: relative; transition: transform .3s ease, box-shadow .3s ease;
+}
+.monthly-section .level-box:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 0 25px rgba(255,0,0,.4); }
+@keyframes monthlyPulse { 0%{ box-shadow:0 0 0 0 rgba(255,0,0,.7);} 70%{ box-shadow:0 0 0 15px rgba(255,0,0,0);} 100%{ box-shadow:0 0 0 0 rgba(255,0,0,0);} }
+.monthly-section .level-box.achieved { border-color:#f87171; background:#7f1d1d; color:#fff; animation: monthlyPulse 1.8s infinite; }
+.monthly-section .level-box .reward-pill { position:absolute; top:-1.6rem; left:50%; transform:translateX(-50%);
+  background:#b91c1c; color:#fff; font-size:.8rem; font-weight:700; padding:.25rem .6rem; border-radius:9999px; box-shadow:0 2px 6px rgba(255,0,0,.35);
+}
+.monthly-section .level-box .target { font-weight:700; color:#fca5a5; }
+
+
+/* Ensure monthly section sits UNDER missions, full-width */
+.monthly-section { display: block; width: 100%; margin-top: 1rem; }
+
+
+/* ===== Responsive tweaks (no design change) ===== */
 @media (max-width: 768px){
   body{ padding:12px; }
-  .wrap{ width:100%; border-radius:18px; }
-  .head{ min-height:110px; padding:16px 14px 18px; }
-  :root{ --mascotW:120px; --mascotTop:0px; }
-  .title{ font-size:22px; padding:2px 12px; }
+  .wrap{ width:100%; border-radius:20px; }
+  .head{ min-height:120px; padding:18px 14px 20px; }
+  .title{ font-size:24px; }
 
-  .inner{ padding:12px; }
-  .grid-panel{ padding:10px; border-radius:16px; }
+  .inner{ padding:14px; }
+  .grid-panel{ padding:12px; }
   .grid{ grid-template-columns:repeat(3, minmax(0, 1fr)); gap:10px; }
   .grid.row2{ grid-template-columns:repeat(3, minmax(0, 1fr)); }
-  .card{ padding:8px; border-radius:14px; }
-  .icon{ width:46px; height:46px; }
+  .card{ padding:10px; }
+  .icon{ width:48px; height:48px; }
   .day{ font-size:13px; }
   .amount, .badge{ font-size:13px; }
   .actions{ margin-top:12px; }
-  button.primary{ padding:12px 20px; font-size:15px; border-radius:999px; }
+  button.primary{ width:100%; padding:12px 20px; font-size:16px; }
 
-  .missions-wrap{ margin:12px; border-radius:18px; }
-  .missions-bg{ padding:18px 12px !important; }
-  .missions-bg h2{ font-size:24px !important; }
-  .missions-bg p{ font-size:13px; }
-  .scroll-container{ padding:2.5rem 0 1rem; gap:0.75rem; }
-  .arrow-btn{ width:44px; height:44px; font-size:1.1rem; }
-  .level-box{ min-width:110px; padding:.7rem .8rem; border-radius:9999px; }
-  .tier-caption{ font-size:.8rem; }
-  #goNowBtn{ padding:.7rem 1.2rem; font-size:.95rem; }
+  .missions-wrap{ margin:14px; border-radius:20px; }
+  .missions-bg{ padding:20px 14px !important; }
+  .missions-bg h2{ font-size:26px !important; }
+  .missions-bg p{ font-size:14px; }
+  .scroll-container{ padding:2.5rem 0 1rem; gap:0.9rem; }
 
-  .monthly-section{ padding:18px 12px; }
-  .monthly-section h2{ font-size:24px; }
-  .monthly-section p{ font-size:13px; }
-  .monthly-section .bar-box{ width:100%; }
+  /* Monthly section */
+  .monthly-section{ padding:20px 14px; }
+  .monthly-section h2{ font-size:26px; }
+  .monthly-section p{ font-size:14px; }
   .monthly-section .monthly-progress-wrap{ padding:2rem 0; }
-  .monthly-section .level-box{ min-width:110px; padding:.7rem .8rem; }
-  .monthly-section .reward-pill{ font-size:.75rem; top:-1.3rem; }
+  .monthly-section .level-box{ min-width:120px; padding:.8rem .9rem; }
+  .monthly-section .reward-pill{ font-size:.8rem; top:-1.4rem; }
+
+  /* Avoid horizontal scroll on small screens */
+  html, body{ overflow-x: hidden; }
 }
 
-/* ===== Small Phones (<=420px) ===== */
-@media (max-width: 420px){
-  :root{ --mascotW:96px; }
-  .title{ font-size:20px; }
+@media (max-width: 480px){
+  .title{ font-size:22px; }
   .grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); gap:8px; }
   .grid.row2{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
-  .icon{ width:42px; height:42px; }
+  .icon{ width:44px; height:44px; }
   .day{ font-size:12px; }
   .amount, .badge{ font-size:12px; }
-  .arrow-btn{ width:42px; height:42px; }
-  .level-box{ min_width:100px; }
-  .missions-bg h2, .monthly-section h2{ font-size:20px !important; }
-  .monthly-section .level-box{ min-width:100px; }
+  .arrow-btn{ width:42px; height:42px; font-size:1rem; }
+  .level-box{ min-width:110px; }
+  .missions-bg h2, .monthly-section h2{ font-size:22px !important; }
   .monthly-section .monthly-progress-wrap::before{ height:6px; }
   .monthly-section .monthly-progress-fill{ height:6px; }
-
-  /* Prevent horizontal scrolling */
-  html, body{ max-width:100%; overflow-x:hidden; }
 }
 
-/* ===== Ultra Small (<=360px) ===== */
 @media (max-width: 360px){
-  .monthly-section .monthly-progress-wrap{ padding:1.5rem 0; }
-  .monthly-section .milestone[style*="right: 50%"]{ right: 40% !important; }
+  .title{ font-size:20px; }
+  .grid, .grid.row2{ grid-template-columns:repeat(1, minmax(0, 1fr)); }
+  .monthly-section .milestone[style*="right: 50%"]{ right: 42% !important; }
 }
 </style>
 </head>
@@ -123,23 +251,21 @@
             🔹 ملاحظة: يتم احتساب المكافآت بشكل يومي، وكل مستوى يمكنك الحصول عليه مرة واحدة فقط خلال اليوم.
           </p>
 </section>
-
 <section class="monthly-section max-w-4xl mx-auto px-4 py-8">
 <header class="text-center">
 <h2 class="text-3xl md:text-4xl font-bold flex items-center justify-center gap-3">
 <span>🏅</span><span class="title-gold">مكافئة تحصيل الفاصوليا الشهرية</span>
 </h2>
 <p class="mt-2 text-red-200">
-      اجمالى تسجيل الدخول فى الشهر:
-      <span class="font-semibold text-red-400" id="monthDaysLabel">26/15</span>
-<span class="text-sm text-red-300">( <span id="monthBeansLabel">26/0</span> )</span>
+          اجمالى تسجيل الدخول فى الشهر:
+          <span class="font-semibold text-red-400" id="monthDaysLabel">0/15</span>
+<span class="text-sm text-red-300">( <span id="monthBeansLabel">0/0</span> )</span>
 </p>
 <p class="mt-1 text-sm text-red-200">
-      اذا دخل الفاصوليا وصل الى <span class="font-semibold text-red-400">2000</span> كل يوم خلال الـ
-      <span class="font-semibold text-red-400">26</span> يوم يمكنك الحصول على
-      <span class="font-semibold text-red-400">6000 فاصوليا</span>
+          اذا دخل الفاصوليا وصل الى <span class="font-semibold text-red-400">2000</span> كل يوم خلال الـ
+          <span class="font-semibold text-red-400">26</span> يوم يمكنك الحصول على
+          <span class="font-semibold text-red-400">6000 فاصوليا</span>
 </p>
-<p class="mt-1 text-sm text-red-200">اليوم (2000/0)</p>
 </header>
 <section class="mt-6 bg-black/40 rounded-3xl shadow-md border border-red-800 p-6">
 <div class="text-center">
@@ -149,12 +275,14 @@
 <div class="bar-box w-full">
 <div class="monthly-progress-wrap" id="monthlyProgressWrap">
 <div class="monthly-progress-fill" id="monthlyProgressFill"></div>
+<!-- 15-day milestone -->
 <div class="milestone" style="right: 50%; transform: translate(50%, -50%);">
 <div class="level-box" id="monthlyBox15">
 <div class="reward-pill">3000</div>
 <div class="target">15D</div>
 </div>
 </div>
+<!-- 26-day milestone -->
 <div class="milestone" style="left: 0;">
 <div class="level-box" id="monthlyBox26">
 <div class="reward-pill">6000</div>
@@ -165,14 +293,16 @@
 </div>
 </div>
 <p class="mt-4 text-sm text-red-200 text-center">
-      🔹 ملاحظة: يتم احتساب المكافآت على أساس شهري، ويمكن الحصول على كل مستوى مرة واحدة عند تحقيقه.
-    </p>
+          🔹 ملاحظة: يتم احتساب المكافآت على أساس شهري، ويمكن الحصول على كل مستوى مرة واحدة عند تحقيقه.
+        </p>
 </section>
-</section>
-<footer class="mt-10 text-center text-xs text-gray-400">مؤسسة ذيب الشرق الأوسط</footer>
+</section><footer class="mt-10 text-center text-xs text-gray-400">
+          تصميم موحّد أحمر داكن • وميض ذهبي للعناوين • خط "Cairo"
+        </footer>
 </main>
 </div>
 </div>
+<!-- Monthly Beans Rewards -->
 <div class="toast" id="toast"></div>
 <script>
 /* ===== Utilities ===== */
@@ -250,31 +380,34 @@ const goBtn = document.getElementById('goNowBtn');
 goBtn && goBtn.addEventListener('click', () => { alert('تم الذهاب الآن ✨'); });
 window.addEventListener('resize', () => renderBoxes(currentBeans));
 renderBoxes(currentBeans);
+
+/* ===== Monthly Beans Rewards Logic (scoped) ===== */
+const MONTH_TOTAL_DAYS = 26;
+let monthDays = 15;   // <-- عدّل هذا الرقم لتحديث عدد الأيام المكتملة هذا الشهر
+let monthBeansToday = 0; // مثال لحساب اليوم (اختياري)
+
+const monthlyFill = document.getElementById('monthlyProgressFill');
+const monthlyWrap = document.getElementById('monthlyProgressWrap');
+const monthlyBox15 = document.getElementById('monthlyBox15');
+const monthlyBox26 = document.getElementById('monthlyBox26');
+const monthDaysLabel = document.getElementById('monthDaysLabel');
+const monthBeansLabel = document.getElementById('monthBeansLabel');
+
+function renderMonthly() {
+  const pct = Math.min(1, Math.max(0, monthDays / MONTH_TOTAL_DAYS));
+  const widthPx = monthlyWrap.clientWidth * pct;
+  monthlyFill.style.width = widthPx + 'px';
+
+  monthDaysLabel.textContent = monthDays + '/15';
+  monthBeansLabel.textContent = '2000/' + monthBeansToday;
+
+  if (monthDays >= 15) monthlyBox15.classList.add('achieved'); else monthlyBox15.classList.remove('achieved');
+  if (monthDays >= 26) monthlyBox26.classList.add('achieved'); else monthlyBox26.classList.remove('achieved');
+}
+
+window.addEventListener('resize', renderMonthly);
+renderMonthly();
+
 </script>
-<script>
-/* ===== Monthly Beans Rewards Logic ===== */
-(function(){
-  const MONTH_TOTAL_DAYS = 26;
-  let monthDays = 26;   // days achieved (label already shows 26/15 per طلب المستخدم)
-  let monthBeansToday = 0;
-
-  const monthlyFill = document.getElementById('monthlyProgressFill');
-  const monthlyWrap = document.getElementById('monthlyProgressWrap');
-  const monthlyBox15 = document.getElementById('monthlyBox15');
-  const monthlyBox26 = document.getElementById('monthlyBox26');
-
-  function renderMonthly() {
-    if (!monthlyWrap || !monthlyFill) return;
-    const pct = Math.min(1, Math.max(0, monthDays / MONTH_TOTAL_DAYS));
-    monthlyFill.style.width = (monthlyWrap.clientWidth * pct) + 'px';
-
-    if (monthDays >= 15) monthlyBox15 && monthlyBox15.classList.add('achieved');
-    if (monthDays >= 26) monthlyBox26 && monthlyBox26.classList.add('achieved');
-  }
-
-  window.addEventListener('resize', renderMonthly);
-  window.addEventListener('load', renderMonthly);
-  renderMonthly();
-})();
-</script></body>
+</body>
 </html>
