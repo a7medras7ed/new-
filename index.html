@@ -58,7 +58,7 @@
   .day{ font-size:12px; }
   .amount, .badge{ font-size:12px; }
   .arrow-btn{ width:42px; height:42px; }
-  .level-box{ min-width:100px; }
+  .level-box{ min_width:100px; }
   .missions-bg h2, .monthly-section h2{ font-size:20px !important; }
   .monthly-section .level-box{ min-width:100px; }
   .monthly-section .monthly-progress-wrap::before{ height:6px; }
@@ -68,7 +68,7 @@
   html, body{ max-width:100%; overflow-x:hidden; }
 }
 
-/* ===== Ultra Small (<=360px) - tweaks to keep milestones in view ===== */
+/* ===== Ultra Small (<=360px) ===== */
 @media (max-width: 360px){
   .monthly-section .monthly-progress-wrap{ padding:1.5rem 0; }
   .monthly-section .milestone[style*="right: 50%"]{ right: 40% !important; }
@@ -123,24 +123,24 @@
             🔹 ملاحظة: يتم احتساب المكافآت بشكل يومي، وكل مستوى يمكنك الحصول عليه مرة واحدة فقط خلال اليوم.
           </p>
 </section>
+
 <section class="monthly-section max-w-4xl mx-auto px-4 py-8">
 <header class="text-center">
 <h2 class="text-3xl md:text-4xl font-bold flex items-center justify-center gap-3">
 <span>🏅</span><span class="title-gold">مكافئة تحصيل الفاصوليا الشهرية</span>
 </h2>
 <p class="mt-2 text-red-200">
-    اجمالى تسجيل الدخول فى الشهر:
-    <span class="font-semibold text-red-400" id="monthDaysLabel">26/15</span>
+      اجمالى تسجيل الدخول فى الشهر:
+      <span class="font-semibold text-red-400" id="monthDaysLabel">26/15</span>
 <span class="text-sm text-red-300">( <span id="monthBeansLabel">26/0</span> )</span>
 </p>
 <p class="mt-1 text-sm text-red-200">
-    اذا دخل الفاصوليا وصل الى <span class="font-semibold text-red-400">2000</span> كل يوم خلال الـ
-    <span class="font-semibold text-red-400">26</span> يوم يمكنك الحصول على
-    <span class="font-semibold text-red-400">6000 فاصوليا</span>
+      اذا دخل الفاصوليا وصل الى <span class="font-semibold text-red-400">2000</span> كل يوم خلال الـ
+      <span class="font-semibold text-red-400">26</span> يوم يمكنك الحصول على
+      <span class="font-semibold text-red-400">6000 فاصوليا</span>
 </p>
 <p class="mt-1 text-sm text-red-200">اليوم (2000/0)</p>
 </header>
-
 <section class="mt-6 bg-black/40 rounded-3xl shadow-md border border-red-800 p-6">
 <div class="text-center">
 <h3 class="text-xl font-bold text-red-400">🎁 مكافآت الشهر</h3>
@@ -165,10 +165,11 @@
 </div>
 </div>
 <p class="mt-4 text-sm text-red-200 text-center">
-    🔹 ملاحظة: يتم احتساب المكافآت على أساس شهري، ويمكن الحصول على كل مستوى مرة واحدة عند تحقيقه.
-  </p>
+      🔹 ملاحظة: يتم احتساب المكافآت على أساس شهري، ويمكن الحصول على كل مستوى مرة واحدة عند تحقيقه.
+    </p>
 </section>
-</section><footer class="mt-10 text-center text-xs text-gray-400">مؤسسة ذيب الشرق الأوسط</footer>
+</section>
+<footer class="mt-10 text-center text-xs text-gray-400">مؤسسة ذيب الشرق الأوسط</footer>
 </main>
 </div>
 </div>
@@ -249,32 +250,31 @@ const goBtn = document.getElementById('goNowBtn');
 goBtn && goBtn.addEventListener('click', () => { alert('تم الذهاب الآن ✨'); });
 window.addEventListener('resize', () => renderBoxes(currentBeans));
 renderBoxes(currentBeans);
-
-/* ===== Monthly Beans Rewards Logic (scoped) ===== */
-const MONTH_TOTAL_DAYS = 26;
-let monthDays = 26;   // days achieved
-let monthBeansToday = 0;
-
-const monthlyFill = document.getElementById('monthlyProgressFill');
-const monthlyWrap = document.getElementById('monthlyProgressWrap');
-const monthlyBox15 = document.getElementById('monthlyBox15');
-const monthlyBox26 = document.getElementById('monthlyBox26');
-const monthDaysLabel = document.getElementById('monthDaysLabel');
-const monthBeansLabel = document.getElementById('monthBeansLabel');
-
-function renderMonthly() {
-  if (!monthlyWrap) return;
-  const pct = Math.min(1, Math.max(0, monthDays / MONTH_TOTAL_DAYS));
-  const widthPx = monthlyWrap.clientWidth * pct;
-  monthlyFill.style.width = widthPx + 'px';
-
-  // labels already set to 26/15 and 26/0 by request
-  if (monthDays >= 15) monthlyBox15.classList.add('achieved'); else monthlyBox15.classList.remove('achieved');
-  if (monthDays >= 26) monthlyBox26.classList.add('achieved'); else monthlyBox26.classList.remove('achieved');
-}
-
-window.addEventListener('resize', renderMonthly);
-renderMonthly();
 </script>
-</body>
+<script>
+/* ===== Monthly Beans Rewards Logic ===== */
+(function(){
+  const MONTH_TOTAL_DAYS = 26;
+  let monthDays = 26;   // days achieved (label already shows 26/15 per طلب المستخدم)
+  let monthBeansToday = 0;
+
+  const monthlyFill = document.getElementById('monthlyProgressFill');
+  const monthlyWrap = document.getElementById('monthlyProgressWrap');
+  const monthlyBox15 = document.getElementById('monthlyBox15');
+  const monthlyBox26 = document.getElementById('monthlyBox26');
+
+  function renderMonthly() {
+    if (!monthlyWrap || !monthlyFill) return;
+    const pct = Math.min(1, Math.max(0, monthDays / MONTH_TOTAL_DAYS));
+    monthlyFill.style.width = (monthlyWrap.clientWidth * pct) + 'px';
+
+    if (monthDays >= 15) monthlyBox15 && monthlyBox15.classList.add('achieved');
+    if (monthDays >= 26) monthlyBox26 && monthlyBox26.classList.add('achieved');
+  }
+
+  window.addEventListener('resize', renderMonthly);
+  window.addEventListener('load', renderMonthly);
+  renderMonthly();
+})();
+</script></body>
 </html>
